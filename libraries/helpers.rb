@@ -12,7 +12,7 @@ module Helpers
       "pprint.pprint(yb.conf.cachedir, width=1)'"
     cachedir = Mixlib::ShellOut.new(cmd)
     cachedir.run_command
-    cachedir.stdout.strip.delete("'")
+    @yum_cachedir = cachedir.stdout.strip.delete("'")
   end
 end
 

@@ -17,6 +17,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# python is required to interact with the yum globalconfig variables,
+# such as rendering the cachedir value
+package 'python'
+
 yum_globalconfig '/etc/yum.conf' do
   node['yum']['main'].each do |config, value|
     send(config.to_sym, value) unless value.nil?

@@ -16,6 +16,11 @@ suites:
     run_list:
       - recipe[yum::default]
       - recipe[yum_test::test_repo]
+  - name: delete_repository
+    run_list:
+      - recipe[yum::default]
+      - recipe[yum_test::test_repository_four]
+      - recipe[yum_test::test_repository_five]
   - name: dnf_compat
     run_list:
       - recipe[yum::dnf_yum_compat]

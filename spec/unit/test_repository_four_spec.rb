@@ -12,6 +12,11 @@ describe 'yum_test::test_repository_four' do
   end
 
   context 'deletes a yum_repository' do
+    before do
+      allow_any_instance_of(Chef::Recipe).to receive(:yum_cachedir)
+        .and_return('/var/cache/yum')
+    end
+
     it 'deletes yum_repository[test4]' do
       expect(test_repository_four_run).to delete_yum_repository('test4')
     end
@@ -20,16 +25,13 @@ describe 'yum_test::test_repository_four' do
       expect(test_repository_four_run).to delete_file('/etc/yum.repos.d/test4.repo')
     end
 
-    it 'does not run execute[yum clean all test4]' do
-      expect(test_repository_four_run).to_not run_execute('yum clean all test4')
+    it 'deletes test4 cache dir' do
+      expect(test_repository_four_run).to delete_directory('/var/cache/yum/test4')
+        .with(recursive: true)
     end
 
     it 'does not run ruby_block[yum-cache-reload-test4]' do
       expect(test_repository_four_run).to_not run_ruby_block('yum-cache-reload-test4')
-    end
-
-    it 'sends a :run to execute[yum clean all test4]' do
-      expect(test_repository_four_file).to notify('execute[yum clean all test4]')
     end
 
     it 'sends a :create to ruby_block[yum-cache-reload-test4]' do
